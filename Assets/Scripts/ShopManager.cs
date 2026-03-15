@@ -61,7 +61,7 @@ public class ShopManager : MonoBehaviour
         }
         PlayerPrefs.Save();
         UpdateShopUI();
-        FindObjectOfType<PlayerController>().UpdateBallAppearance();
+        FindAnyObjectByType<PlayerController>().UpdateBallAppearance();
     }
 
     void UpdateShopUI()

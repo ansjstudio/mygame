@@ -2,6 +2,7 @@ using DG.Tweening;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class UIManager : MonoBehaviour
 {
@@ -33,6 +34,8 @@ public class UIManager : MonoBehaviour
     [Header("Diamonds Text")]
     [SerializeField] private TextMeshProUGUI diamondText;
     //UIManager SingleTon Pattern
+
+    private string[] suffixes = { "", "K", "M", "B", "T", "A", "B", "C", "D", "E" };
 
     private static UIManager instance;
 
@@ -128,17 +131,32 @@ public class UIManager : MonoBehaviour
 
     public void UpdateScoreUI(int score)
     {
-        scoreText.text = "Score: " + score;
+        scoreText.text = "Score: " + FormatAdvanceScore(score);
     }
 
     public void UpdateHighScore(int highScore)
     {
-        highScoreText.text = "Best: " + highScore;
+        highScoreText.text = "Best: " + FormatAdvanceScore(highScore);
     }
 
     public void UpdateDiamondsUI(int diamond)
     {
-        diamondText.text = "Diamonds: " + diamond;
+        diamondText.text = "Diamonds: " + FormatAdvanceScore(diamond);
+    }
+
+    string FormatAdvanceScore(double score)
+    {
+        if (score < 1000) return score.ToString("0");
+
+        int exp = (int)(Mathf.Log((float)score, 1000));
+
+        // Agar suffixes ki limit se bahar nikal jaye toh aakhri wala uthao
+        if (exp >= suffixes.Length) exp = suffixes.Length - 1;
+
+        double number = score / Mathf.Pow(1000, exp);
+
+        // Result: 1.5A ya 10.2B
+        return string.Format("{0:F1}{1}", number, suffixes[exp]);
     }
 
     void AnimateTextBlink(TextMeshProUGUI tMPro)

@@ -1,4 +1,6 @@
 using DG.Tweening;
+using System.Collections;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor.PackageManager;
 using UnityEngine;
@@ -8,6 +10,7 @@ using UnityEngine.SocialPlatforms.Impl;
 public class GameManager : MonoBehaviour
 {
     [HideInInspector] public bool isGameStarted = false;
+    [HideInInspector] public bool isGameOver = false;
 
     private static GameManager instance;
     private int score = 0;
@@ -59,6 +62,7 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         isGameStarted = true;
+        isGameOver = false;
         UIManager.Instance.CloseMainMenu();
     }
 
@@ -74,13 +78,8 @@ public class GameManager : MonoBehaviour
     }
     public void EndGame()
     {
-        int highScore = PlayerPrefs.GetInt("HighScore", 0);
-        if (score > highScore)
-        {
-            PlayerPrefs.SetInt("HighScore", score);
-        }
-
-        UIManager.Instance.OpenGameOverMenu(score, highScore);
+        isGameOver = true;
+        StartCoroutine(WaitAndShowGameOver());
     }
 
     public void AddScore()
@@ -109,6 +108,26 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.Save();
 
         UIManager.Instance.UpdateDiamondsUI(diamond);
+    }
+
+
+
+    IEnumerator WaitAndShowGameOver()
+    {
+        yield return new WaitForSeconds(1f);
+        ShowGameOverMenu();
+    }
+
+    private void ShowGameOverMenu()
+    {
+        int highScore = PlayerPrefs.GetInt("HighScore", 0);
+        if (score > highScore)
+        {
+            PlayerPrefs.SetInt("HighScore", score);
+        }
+
+        UIManager.Instance.OpenGameOverMenu(score, highScore);
+
     }
 
 }

@@ -2,13 +2,14 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float baseSpeed = 5f;
     private float speed = 0f;
     [SerializeField]
     [Range(0, 100)]
-    private float maxSpeed = 100f;
+    private float maxSpeed = 30f;
     [SerializeField] private Material[] ballMaterials;
     private MeshRenderer ballRenderer;
 
@@ -65,14 +66,14 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
-        if (GameManager.Instance.isGameStarted)
+        if (GameManager.Instance.isGameStarted && !GameManager.Instance.isGameOver)
         {
             if (Input.GetMouseButtonDown(0))
             {
                 ChangeDirection();
             }
-            if(transform.position.y < -0.2)
-            {
+            if(transform.position.y < 0)
+            { 
                 GameManager.Instance.EndGame();
             }
         }
