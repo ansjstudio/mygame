@@ -35,33 +35,58 @@ public class ShopManager : MonoBehaviour
         UpdateShopUI();
     }
 
-    public void BuyOrSelect()
+    public void BuyOrSelect(BallsItem ballsItem)
     {
-        bool isUnlocked = PlayerPrefs.GetInt("BallUnlocked_" + currentIndex, 0) == 1 || currentIndex == 0;
+        if (ballsItem == null) return;
 
-        if (isUnlocked)
+        if (ballsItem.isPurchased)
         {
             // Select Logic
-            PlayerPrefs.SetInt("SelectedBall", currentIndex);
+            PlayerPrefs.SetInt("SelectedBall", ballsItem.id);
         }
         else
         {
             // Buy Logic
-            if (totalDiamonds >= ballPrices[currentIndex])
+            if (totalDiamonds >= ballsItem.price)
             {
-                totalDiamonds -= ballPrices[currentIndex];
+                totalDiamonds -= ballsItem.price;
                 PlayerPrefs.SetInt("Diamonds", totalDiamonds);
-                PlayerPrefs.SetInt("BallUnlocked_" + currentIndex, 1);
-                PlayerPrefs.SetInt("SelectedBall", currentIndex);
+                ballsItem.isPurchased = true;
+                PlayerPrefs.SetInt("BallUnlocked_" + ballsItem.id, 1);
+                PlayerPrefs.SetInt("SelectedBall", ballsItem.id);
+                UIManager.Instance.UpdateDiamondsUI(totalDiamonds); // UI ko update karein
             }
             else
             {
                 Debug.Log("Diamonds kam hain bhai!");
             }
         }
-        PlayerPrefs.Save();
-        UpdateShopUI();
-        FindAnyObjectByType<PlayerController>().UpdateBallAppearance();
+
+        //bool isUnlocked = PlayerPrefs.GetInt("BallUnlocked_" + currentIndex, 0) == 1 || currentIndex == 0;
+
+        //if (isUnlocked)
+        //{
+        //    // Select Logic
+        //    PlayerPrefs.SetInt("SelectedBall", currentIndex);
+        //}
+        //else
+        //{
+        //    // Buy Logic
+        //    if (totalDiamonds >= ballPrices[currentIndex])
+        //    {
+        //        totalDiamonds -= ballPrices[currentIndex];
+        //        PlayerPrefs.SetInt("Diamonds", totalDiamonds);
+        //        PlayerPrefs.SetInt("BallUnlocked_" + currentIndex, 1);
+        //        PlayerPrefs.SetInt("SelectedBall", currentIndex);
+        //    }
+        //    else
+        //    {
+        //        Debug.Log("Diamonds kam hain bhai!");
+        //    }
+        //}
+        //PlayerPrefs.Save();
+        //UpdateShopUI();
+        //FindAnyObjectByType<PlayerController>().UpdateBallAppearance();
     }
 
     void UpdateShopUI()

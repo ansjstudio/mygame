@@ -63,6 +63,8 @@ public class GameManager : MonoBehaviour
     {
         isGameStarted = true;
         isGameOver = false;
+
+        UIManager.Instance.StartSetup();
         UIManager.Instance.CloseMainMenu();
     }
 

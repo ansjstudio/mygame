@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
     [Header("Main Menu Assets")]
     [SerializeField] private GameObject mainMenuPanel;
     [SerializeField] private List<GameObject> mainMenuButtons;
+    [SerializeField] private TextMeshProUGUI mainMenuighScoreText;
 
     [Header("Shop Assets")]
     [SerializeField] private GameObject shopMenuPanel;
@@ -67,16 +68,15 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    void Start()
+  
+    public void StartSetup()
     {
-        StartSetup();
-    }
-
-    void StartSetup()
-    {
-        scoreText.gameObject.SetActive(true);
-        diamondText.gameObject.SetActive(true);
-        highScoreText.gameObject.SetActive(true);
+        if (GameManager.Instance.isGameStarted)
+        {
+            scoreText.gameObject.SetActive(true);
+            diamondText.gameObject.SetActive(true);
+            highScoreText.gameObject.SetActive(true);
+        }
     }
 
     void Update()
@@ -89,6 +89,8 @@ public class UIManager : MonoBehaviour
         mainMenuPanel.transform.localScale = Vector3.zero;
         mainMenuPanel.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBack);
         mainMenuPanel.SetActive(true);
+        int highSore = PlayerPrefs.GetInt("HighScore", 0);
+        mainMenuighScoreText.text = "Best Score: " + highSore;
     }
 
     public void CloseMainMenu()
@@ -103,8 +105,8 @@ public class UIManager : MonoBehaviour
         gameOverPanel.SetActive(true);
         gameOverPanel.transform.localScale = Vector3.one;
         gameOverPanel.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBack);
-        finalScoreText.text = "Score: " + highScore.ToString();
-        finalScoreText.text = "Best: " + finalScore.ToString();
+        finalScoreText.text = "Score: " + finalScore;
+        gameOverHighScoreText.text = "Best Score: " + highScore;
     }
 
     public void CloseGameOverMenu()
