@@ -63,6 +63,16 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.CloseMainMenu();
     }
 
+    public void ShowShopMenu()
+    {
+        UIManager.Instance.OpenShopMenu();
+    }
+
+    public void HideSopMenu()
+    {
+        UIManager.Instance.CloseShopMenu();
+    }
+
     public void RestartGame()
     {
         isGameStarted = false;
@@ -107,9 +117,7 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.UpdateDiamondsUI(diamond);
     }
 
-
-
-    IEnumerator WaitAndShowGameOver()
+    private IEnumerator WaitAndShowGameOver()
     {
         yield return new WaitForSeconds(1f);
         ShowGameOverMenu();

@@ -86,8 +86,8 @@ public class UIManager : MonoBehaviour
 
     public void OpenMainMenu()
     {
-        mainMenuPanel.transform.localScale = Vector3.zero;
-        mainMenuPanel.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBack);
+        //mainMenuPanel.transform.localScale = Vector3.zero;
+        //mainMenuPanel.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBack);
         mainMenuPanel.SetActive(true);
         int highSore = PlayerPrefs.GetInt("HighScore", 0);
         mainMenuighScoreText.text = "Best Score: " + highSore;
